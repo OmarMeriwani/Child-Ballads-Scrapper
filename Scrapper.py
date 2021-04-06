@@ -133,18 +133,36 @@ def ArchivePage2(url1,istr):
     bb = ''
     for b in body:
         bb = (strip_tags(str(b)))
-    bb = bb[0:bb.find('REFERENCES ')]
-    title = bb.split('\n')[1]
-    desc = bb.split('\n')[2][13:]
-    author = bb.split('\n')[3][7:]
-    earliest_date = bb.split('\n')[4][15:]
-    keywords = bb.split('\n')[5][10:]
-    found_in = bb.split('\n')[6][10:]
+    bb = bb.split('\n')
+    title = bb[1]
+    desc = ''
+    author = ''
+    earliest_date = ''
+    keywords = ''
+    found_in = ''
+    for line in bb:
+        if line.startswith('DESCRIPTION:')== True:
+            desc = line[13:]
+        if line.startswith('AUTHOR:')== True:
+            author = line[7:]
+        if line.startswith('EARLIEST DATE:')== True:
+            earliest_date = line[15:]
+        if line.startswith('KEYWORDS:')== True:
+            keywords = line[10:]
+        if line.startswith('FOUND IN:')== True:
+            found_in = line[10:]
+        '''
+        bb = bb[0:bb.find('REFERENCES ')]
+        desc = bb.split('\n')[2][13:]
+        author = bb.split('\n')[3][7:]
+        earliest_date = bb.split('\n')[4][15:]
+        keywords = bb.split('\n')[5][10:]
+        found_in = bb.split('\n')[6][10:]'''
     print('title: ',title,'\n','desc: ',desc,'\n','author: ',author,'\n','earliest_date: ',earliest_date,'\n','keywords: ',keywords,'\n','found_in: ',found_in )
     return [istr,title,desc,author,earliest_date,keywords,found_in]
 
 df = pd.DataFrame(columns=['number','title','desc','author','earliest_date','keywords','found_in'])
-for i in range(1,5):
+for i in range(1,306):
     try:
         istr = ''
         if len(str(i)) == 1:
